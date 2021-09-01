@@ -1,0 +1,20 @@
+{
+  "name": "reactive-forms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/czemar/reactive-forms.git"
+  },
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/czemar/reactive-forms/issues"
+  },
+  "homepage": "https://github.com/czemar/reactive-forms#readme"
+}
