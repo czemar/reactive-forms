@@ -1,6 +1,6 @@
 {
-  "name": "reactive-forms",
-  "version": "1.0.0",
+  "name": "@czemar/reactive-forms",
+  "version": "1.0.1",
   "description": "",
   "main": "index.ts",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "git+https://github.com/czemar/reactive-forms.git"
   },
   "publishConfig": {
-    "registry":"https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/czemar/reactive-forms/issues"
   },
-  "homepage": "https://github.com/czemar/reactive-forms#readme"
+  "homepage": "https://github.com/czemar/reactive-forms#readme",
+  "dependencies": {
+    "@angular/core": "^12.2.4",
+    "@angular/forms": "^12.2.4",
+    "rxjs": "^7.3.0"
+  }
 }

@@ -8,7 +8,6 @@ import { ReactiveAbstract } from '../types/reactive-abstract.type';
 export class ReactiveGroup<T = any> extends FormGroup {
 
   public value: T;
-  public touched = false;
 
   private _serverError?: ServerError;
   private _submitted = false;
@@ -57,13 +56,16 @@ export class ReactiveGroup<T = any> extends FormGroup {
     this._serverError = {
       value,
       message,
-    }
+    };
   }
 
   public removeServerError(): void {
     this._serverError = null;
   }
 
+  /**
+   * @TODO Documentation
+   */
   public getErrorsFromChildren(): ValidationErrors {
     const errors = {};
 
@@ -90,26 +92,13 @@ export class ReactiveGroup<T = any> extends FormGroup {
     return errors;
   }
 
-  public markAsTouched(opts?: {
-    onlySelf?: boolean;
-  }): void {
-    this.touched = true;
-    super.markAsTouched(opts);
-  }
-
-  public markAsUntouched(opts?: {
-    onlySelf?: boolean;
-  }): void {
-    this.touched = false;
-    super.markAsUntouched(opts);
-  }
-
   public get(path: string | (string | number)[]): ReactiveControl | ReactiveArray | ReactiveGroup {
     return super.get(path) as (ReactiveControl | undefined);
   }
 
-  public reset() {
+  public reset(): void {
     super.reset();
     this._submitted = false;
   }
+
 }

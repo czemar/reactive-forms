@@ -1,5 +1,5 @@
-import { FormArray } from "@angular/forms";
-import { ReactiveAbstract } from "../types/reactive-abstract.type";
+import { FormArray } from '@angular/forms';
+import { ReactiveAbstract } from '../types/reactive-abstract.type';
 
 export class ReactiveArray<T = any> extends FormArray {
 
@@ -12,7 +12,7 @@ export class ReactiveArray<T = any> extends FormArray {
         return this._submitted;
     }
 
-    public submit() {
+    public submit(): Promise<T[]> {
         this._submitted = true;
 
         this.markAllAsTouched();
@@ -20,9 +20,14 @@ export class ReactiveArray<T = any> extends FormArray {
         for (const control of this.controls) {
             control.submit();
         }
+
+        if (!this.valid) {
+            return Promise.reject(this.errors);
+        }
+        return Promise.resolve(this.value);
     }
 
-    public removeDuplicates(keyFn: (arg: T) => string | number) {
+    public removeDuplicates(keyFn: (arg: T) => string | number): void {
         const keys = this.value.map(keyFn);
 
         for (let i = this.controls.length - 1; i >= 0; i--) {
@@ -34,7 +39,7 @@ export class ReactiveArray<T = any> extends FormArray {
         }
     }
 
-    public reset() {
+    public reset(): void {
         super.reset();
         this._submitted = false;
     }
