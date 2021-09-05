@@ -7,9 +7,9 @@ import { ReactiveAbstract } from '../types/reactive-abstract.type';
 
 export class ReactiveGroup<T = any> extends FormGroup {
 
-  public value: T;
+  public value: T | null = null;
 
-  private _serverError?: ServerError;
+  private _serverError: ServerError | null = null;
   private _submitted = false;
 
   /**
@@ -28,9 +28,9 @@ export class ReactiveGroup<T = any> extends FormGroup {
 
   /**
    * Submits formGroup (validating all the fields and submitting them)
-   * @returns promise with resolve(value) or reject(validationerrors)
+   * @returns promise with resolve(value) or reject(validationErrors)
    */
-  public submit(): Promise<T> {
+  public submit(onSuccess?: (value: T | null) => void, onFailure?: (errors: ValidationErrors | null) => void): Promise<T | null> {
     this._submitted = true;
     for (const key of Object.keys(this.controls)) {
       if (this.controls[key] instanceof ReactiveControl) {
@@ -40,9 +40,12 @@ export class ReactiveGroup<T = any> extends FormGroup {
 
     this.markAllAsTouched();
 
-    if (!this.valid) {
+    if (this.invalid) {
+      onFailure?.(this.errors);
       return Promise.reject(this.errors);
     }
+
+    onSuccess?.(this.value);
     return Promise.resolve(this.value);
   }
 
@@ -66,7 +69,7 @@ export class ReactiveGroup<T = any> extends FormGroup {
   /**
    * @TODO Documentation
    */
-  public getErrorsFromChildren(): ValidationErrors {
+  public getErrorsFromChildren(): ValidationErrors | null {
     const errors = {};
 
     for (const key of Object.keys(this.controls)) {
@@ -92,8 +95,8 @@ export class ReactiveGroup<T = any> extends FormGroup {
     return errors;
   }
 
-  public get(path: string | (string | number)[]): ReactiveControl | ReactiveArray | ReactiveGroup {
-    return super.get(path) as (ReactiveControl | undefined);
+  public get(path: string | (string | number)[]): ReactiveAbstract | null {
+    return super.get(path) as (ReactiveAbstract | null);
   }
 
   public reset(): void {

@@ -13,8 +13,8 @@ export abstract class ReactiveAccessor<T = string> implements ControlValueAccess
 
     @Output() valueChanges: EventEmitter<T> = new EventEmitter<T>();
 
-    private _touchChangesSubscription: Subscription;
-    private _valueChangesSubscrition: Subscription;
+    private _touchChangesSubscription?: Subscription;
+    private _valueChangesSubscrition?: Subscription;
 
     private _onTouched = () => {};
     private _onChange = (_: T) => {};
@@ -49,7 +49,7 @@ export abstract class ReactiveAccessor<T = string> implements ControlValueAccess
         this._onTouched = fn;
     }
 
-    setEnabledState?(isEnabled: boolean): void {
+    setEnabledState(isEnabled: boolean): void {
         if (isEnabled) {
             this.control.enable();
         } else {

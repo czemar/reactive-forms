@@ -1,10 +1,11 @@
 import { FormArray } from '@angular/forms';
 import { ReactiveAbstract } from '../types/reactive-abstract.type';
+import { ValidationErrors } from '../inerfaces/validation-error.interface';
 
 export class ReactiveArray<T = any> extends FormArray {
 
-    public value: T[];
-    public controls: ReactiveAbstract[];
+    public value: T[] = [];
+    public controls: ReactiveAbstract[] = [];
 
     private _submitted = false;
 
@@ -12,7 +13,7 @@ export class ReactiveArray<T = any> extends FormArray {
         return this._submitted;
     }
 
-    public submit(): Promise<T[]> {
+    public submit(onSuccess?: (value: T[] | null) => void, onFailure?: (errors: ValidationErrors | null) => void): Promise<T[]> {
         this._submitted = true;
 
         this.markAllAsTouched();
@@ -21,9 +22,11 @@ export class ReactiveArray<T = any> extends FormArray {
             control.submit();
         }
 
-        if (!this.valid) {
+        if (this.invalid) {
+            onFailure?.(this.errors);
             return Promise.reject(this.errors);
         }
+        onSuccess?.(this.value);
         return Promise.resolve(this.value);
     }
 

@@ -1,9 +1,8 @@
 import { FormControl } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 
 export class ReactiveControl<T = any> extends FormControl {
 
-  public value: T;
+  public value: T | null = null;
 
   private _submitted = false;
 
