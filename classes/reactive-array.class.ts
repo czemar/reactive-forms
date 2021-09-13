@@ -4,6 +4,7 @@ import { ValidationErrors } from '../inerfaces/validation-error.interface';
 import { ReactiveControl } from './reactive-control.class';
 import { ReactiveGroup } from './ractive-group.class';
 import { ValidationErrorsWithControl } from '../inerfaces/validation-errors-recursive.interface';
+import { List } from './list.class';
 
 export class ReactiveArray<T = any> extends FormArray {
 
@@ -14,6 +15,13 @@ export class ReactiveArray<T = any> extends FormArray {
 
     public get submitted(): boolean {
         return this._submitted;
+    }
+
+    /**
+     * returns list of errors based on errors property
+     */
+    public get errorsList() {
+        return List.fromObject<ValidationErrors>(this.errors);
     }
 
     public submit(onSuccess?: (value: T[] | null) => void, onFailure?: (errors: ValidationErrors | null) => void): Promise<T[]> {

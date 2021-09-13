@@ -1,4 +1,6 @@
 import { FormControl } from '@angular/forms';
+import { List } from './list.class';
+import { ValidationErrors } from '../inerfaces/validation-error.interface';
 
 export class ReactiveControl<T = any> extends FormControl {
 
@@ -8,6 +10,13 @@ export class ReactiveControl<T = any> extends FormControl {
 
   public get submitted(): boolean {
     return this._submitted;
+  }
+
+  /**
+   * Returns list of errors based on errors property
+   */
+  public get errorsList() {
+      return List.fromObject<ValidationErrors>(this.errors);
   }
 
   public submit(): void {
