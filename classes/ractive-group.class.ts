@@ -2,15 +2,25 @@ import { FormGroup } from '@angular/forms';
 import { ValidationErrors } from '../inerfaces/validation-error.interface';
 import { ReactiveControl } from './reactive-control.class';
 import { ServerError } from '../inerfaces/server-error.interface';
-import { ReactiveArray } from './reactive-array.class';
 import { ReactiveAbstract } from '../types/reactive-abstract.type';
+import { List } from './list.class';
+import { ReactiveArray } from './reactive-array.class';
+import { ValidationErrorsWithControl } from '../inerfaces/validation-errors-recursive.interface';
 
 export class ReactiveGroup<T = any> extends FormGroup {
 
   public value: T | null = null;
+  public errors: ValidationErrors | null = null;
 
   private _serverError: ServerError | null = null;
   private _submitted = false;
+
+  /**
+   * returns list of errors based on errors property
+   */
+  public get errorsList() {
+    return List.fromObject<ValidationErrors>(this.errors);
+  }
 
   /**
    * Returns true if the formGroup was previously submitted
@@ -67,10 +77,31 @@ export class ReactiveGroup<T = any> extends FormGroup {
   }
 
   /**
-   * @TODO Documentation
+   * Returns full list of errors in form
    */
-  public getErrorsFromChildren(): ValidationErrors | null {
-    const errors = {};
+  public getErrorsRecursively(): ValidationErrorsWithControl | null {
+    const errors: ValidationErrorsWithControl = {};
+
+    if (!this.errors) return null;
+
+    for (const key of Object.keys(this.errors)) {
+      errors[key] = {
+        ...this.errors[key],
+        control: this
+      }
+    }
+
+    const assign = (errorsToAssign: ValidationErrorsWithControl) => {
+      for (let key of Object.keys(errorsToAssign)) {
+        const value = errorsToAssign[key];
+
+        while (Object.keys(errors).includes(key)) {
+          key = `_${key}`;
+        }
+
+        Object.assign(errors, { [key]: value });
+      }
+    }
 
     for (const key of Object.keys(this.controls)) {
       const control = this.controls[key];
@@ -80,11 +111,28 @@ export class ReactiveGroup<T = any> extends FormGroup {
       }
 
       if (control instanceof ReactiveControl) {
-        Object.assign(this.errors, control.errors);
+        const err = control.errors;
+        if (err) {
+          for (const key of Object.keys(err)) {
+            err[key] = {
+              ...err[key],
+              control
+            }
+          }
+          assign({ ...err });
+        }
       }
 
       if (control instanceof ReactiveGroup) {
-        Object.assign(this.errors, control.getErrorsFromChildren());
+        const err = control.getErrorsRecursively();
+        if (err)
+          assign(err);
+      }
+
+      if (control instanceof ReactiveArray) {
+        const err = control.getErrorsRecursively();
+        if (err)
+          assign(err);
       }
     }
 
@@ -93,6 +141,10 @@ export class ReactiveGroup<T = any> extends FormGroup {
     }
 
     return errors;
+  }
+
+  public getErrorsListRecursively(): List<ValidationErrorsWithControl> | null {
+    return List.fromObject<ValidationErrorsWithControl>(this.getErrorsRecursively());
   }
 
   public get(path: string | (string | number)[]): ReactiveAbstract | null {
