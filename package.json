@@ -1,9 +1,11 @@
 {
   "name": "@czemar/reactive-forms",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
-  "main": "index.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
+    "build" : "tsc",
     "ngcc": "ngcc"
   },
   "repository": {
@@ -24,5 +26,8 @@
     "@angular/core": "^12.2.4",
     "@angular/forms": "^12.2.4",
     "rxjs": "^7.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.4.3"
   }
 }
