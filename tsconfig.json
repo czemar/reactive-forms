@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
+    "target": "es2020",
+    "module": "es2020",
     "declaration": true,
     "outDir": "./lib",
     "experimentalDecorators": true,
-    "strict": true
+    "strict": true,
+    "moduleResolution": "node",
   },
   "include": ["src"],
   "exclude": ["node_modules", "lib"]
