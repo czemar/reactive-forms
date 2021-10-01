@@ -7,6 +7,9 @@ import { ValidationErrorsWithControl } from '../inerfaces/validation-errors-recu
 export declare class ReactiveGroup<T = any> extends FormGroup {
     value: T | null;
     errors: ValidationErrors | null;
+    controls: {
+        [key: string]: ReactiveAbstract;
+    };
     private _serverError;
     private _submitted;
     /**
@@ -18,7 +21,7 @@ export declare class ReactiveGroup<T = any> extends FormGroup {
      */
     get submitted(): boolean;
     /**
-     * Returs errors from server after submitting formGroup
+     * Returns errors from server after submitting formGroup
      */
     get serverError(): ServerError | null;
     /**
@@ -34,6 +37,6 @@ export declare class ReactiveGroup<T = any> extends FormGroup {
      */
     getErrorsRecursively(): ValidationErrorsWithControl | null;
     getErrorsListRecursively(): List<ValidationErrorsWithControl> | null;
-    get(path: string | (string | number)[]): ReactiveAbstract | null;
+    get(path: string | (string | number)[]): ReactiveAbstract;
     reset(): void;
 }
