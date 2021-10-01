@@ -1,17 +1,16 @@
 import { FormGroup } from '@angular/forms';
-import { ValidationErrors } from '../inerfaces/validation-error.interface';
+import { ValidationErrors } from '../interfaces/validation-error.interface';
 import { ReactiveControl } from './reactive-control.class';
-import { ServerError } from '../inerfaces/server-error.interface';
+import { ServerError } from '../interfaces/server-error.interface';
 import { ReactiveAbstract } from '../types/reactive-abstract.type';
 import { List } from './list.class';
 import { ReactiveArray } from './reactive-array.class';
-import { ValidationErrorsWithControl } from '../inerfaces/validation-errors-recursive.interface';
+import { ValidationErrorsWithControl } from '../interfaces/validation-errors-recursive.interface';
 
 export class ReactiveGroup<T = any> extends FormGroup {
 
   public value: T | null = null;
   public errors: ValidationErrors | null = null;
-  public controls: { [key: string]: ReactiveAbstract; } = {};
 
   private _serverError: ServerError | null = null;
   private _submitted = false;
@@ -148,8 +147,8 @@ export class ReactiveGroup<T = any> extends FormGroup {
     return List.fromObject<ValidationErrorsWithControl>(this.getErrorsRecursively());
   }
 
-  public get(path: string | (string | number)[]): ReactiveAbstract {
-    return super.get(path) as ReactiveAbstract;
+  public get<T = (ReactiveAbstract | null)>(path: string | (string | number)[]): T {
+    return super.get(path) as unknown as T;
   }
 
   public reset(): void {

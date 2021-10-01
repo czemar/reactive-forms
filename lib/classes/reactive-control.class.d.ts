@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { List } from './list.class';
-import { ValidationErrors } from '../inerfaces/validation-error.interface';
+import { ValidationErrors } from '../interfaces/validation-error.interface';
 export declare class ReactiveControl<T = any> extends FormControl {
     value: T | null;
     private _submitted;

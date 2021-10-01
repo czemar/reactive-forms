@@ -1,7 +1,7 @@
 import { FormArray } from '@angular/forms';
 import { ReactiveAbstract } from '../types/reactive-abstract.type';
-import { ValidationErrors } from '../inerfaces/validation-error.interface';
-import { ValidationErrorsWithControl } from '../inerfaces/validation-errors-recursive.interface';
+import { ValidationErrors } from '../interfaces/validation-error.interface';
+import { ValidationErrorsWithControl } from '../interfaces/validation-errors-recursive.interface';
 import { List } from './list.class';
 export declare class ReactiveArray<T = any> extends FormArray {
     value: T[];
