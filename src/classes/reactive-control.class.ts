@@ -4,7 +4,7 @@ import { ValidationErrors } from '../interfaces/validation-error.interface';
 
 export class ReactiveControl<T = any> extends FormControl {
 
-  public value: T | null = null;
+  public value!: T | null;
 
   private _submitted = false;
 

@@ -9,8 +9,9 @@ import { ValidationErrorsWithControl } from '../interfaces/validation-errors-rec
 
 export class ReactiveGroup<T = any> extends FormGroup {
 
-  public value: T | null = null;
-  public errors: ValidationErrors | null = null;
+  public value!: T | null;
+  public errors!: ValidationErrors | null;
+  public controls!: { [key: string]: ReactiveAbstract; };
 
   private _serverError: ServerError | null = null;
   private _submitted = false;

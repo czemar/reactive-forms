@@ -8,8 +8,8 @@ import { List } from './list.class';
 
 export class ReactiveArray<T = any> extends FormArray {
 
-    public value: T[] = [];
-    public controls: ReactiveAbstract[] = [];
+    public value!: T[];
+    public controls!: ReactiveAbstract[];
 
     private _submitted = false;
 
