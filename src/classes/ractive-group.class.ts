@@ -11,6 +11,7 @@ export class ReactiveGroup<T = any> extends FormGroup {
 
   public value: T | null = null;
   public errors: ValidationErrors | null = null;
+  public controls: { [key: string]: ReactiveAbstract; } = {};
 
   private _serverError: ServerError | null = null;
   private _submitted = false;
@@ -30,7 +31,7 @@ export class ReactiveGroup<T = any> extends FormGroup {
   }
 
   /**
-   * Returs errors from server after submitting formGroup
+   * Returns errors from server after submitting formGroup
    */
   public get serverError(): ServerError | null {
     return this._serverError;
@@ -147,8 +148,8 @@ export class ReactiveGroup<T = any> extends FormGroup {
     return List.fromObject<ValidationErrorsWithControl>(this.getErrorsRecursively());
   }
 
-  public get(path: string | (string | number)[]): ReactiveAbstract | null {
-    return super.get(path) as (ReactiveAbstract | null);
+  public get(path: string | (string | number)[]): ReactiveAbstract {
+    return super.get(path) as ReactiveAbstract;
   }
 
   public reset(): void {
